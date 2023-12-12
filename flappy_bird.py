@@ -1,14 +1,28 @@
 import pygame
+import os
 import random
-from bird import Bird
 
-screen_width = 500
-screen_height = 800
+TELA_LARGURA = 500
+TELA_ALTURA = 600
 
-pipe_img = pygame.image.load("img/pipe.png")
-floor_img = pygame.image.load("img/base.png")
-bg_img = pygame.image.load("img/bg")
-
+IMAGEM_CANO = pygame.image.load(os.path.join('img', 'pipe.png'))
+IMAGEM_CHAO = pygame.image.load(os.path.join('img', 'base.png'))
+IMAGEM_BACKGROUND = pygame.image.load(os.path.join('img', 'bg.png'))
+IMAGENS_PASSARO = [
+    pygame.image.load(os.path.join('img', 'bird1.png')),
+    pygame.image.load(os.path.join('img', 'bird2.png')),
+    pygame.image.load(os.path.join('img', 'bird3.png')),
+]
 
 pygame.font.init()
-score_font = pygame.font.SysFont("Arial", 50)
+FONTE_PONTOS = pygame.font.SysFont('arial', 50)
+
+
+class passaro:
+    pass
+
+class cano:
+    pass
+
+class floor:
+    pass
