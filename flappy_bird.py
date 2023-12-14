@@ -20,6 +20,7 @@ ground = pygame.image.load("img/ground.png")
 #Game Variables
 ground_pos_x = 0
 ground_speed = 4
+game_active = True
 
 
 class Bird(pygame.sprite.Sprite):
@@ -46,11 +47,8 @@ class Bird(pygame.sprite.Sprite):
         if self.gravity > 8:
             self.gravity = 8
        
-        if self.rect.bottom <= screen_height-80:
+        if self.rect.bottom <= screen_height-75:
             self.rect.y += int(self.gravity) 
-
-        #Jump = Press Space
-        
 
         #ANIMATION
         self.counter += 1 
@@ -87,16 +85,24 @@ while running:
 
     # Add de Background Image
     screen.blit(bg, (0,-150))
-
+    
     #add the Bird
     bird_group.draw(screen)
-    bird_group.update()
-
-    # Add and make the floor move
+    
+    #add Floor
     screen.blit(ground, (ground_pos_x,(screen_height-70)))
-    ground_pos_x -= ground_speed # move the floor a little to Letf - NEGATIVA VALUE
-    if abs(ground_pos_x) > 100:
-        ground_pos_x = 0
+
+    if game_active: 
+
+        #make bird move
+        bird_group.update()
+        if bird.rect.bottom > screen_height-75:
+            game_active = False
+
+        #make the floor move
+        ground_pos_x -= ground_speed # move the floor a little to Letf - NEGATIVA VALUE
+        if abs(ground_pos_x) > 100:
+            ground_pos_x = 0
 
 
     # flip() the display to put your work on screen
