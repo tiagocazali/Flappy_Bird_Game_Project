@@ -1,27 +1,46 @@
-# Example file showing a basic pygame "game loop"
 import pygame
+import random
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((700, 500))
-clock = pygame.time.Clock()
-running = True
 
+screen_width = 600 
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+clock = pygame.time.Clock()
+
+
+#Load Imagem
+bg = pygame.image.load("img/bgg.png")
+ground = pygame.image.load("img/ground.png")
+
+#Game Variables
+ground_pos_x = 0
+ground_speed = 4
+
+  
+
+running = True
 while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
+   
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    # Add de Background Image
+    screen.blit(bg, (0,-150))
 
-    # RENDER YOUR GAME HERE
+    # Add and make the floor move
+    screen.blit(ground, (ground_pos_x,(screen_height-70)))
+    ground_pos_x -= ground_speed # move the floor a little to Letf - NEGATIVA VALUE
+    if abs(ground_pos_x) > 100:
+        ground_pos_x = 0
+
 
     # flip() the display to put your work on screen
-    pygame.display.flip()
+    pygame.display.update()
 
-    clock.tick(60)  # limits FPS to 60
+    clock.tick(30)  # limits FPS to 60
 
 pygame.quit()
