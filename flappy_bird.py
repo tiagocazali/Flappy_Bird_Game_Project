@@ -11,6 +11,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 
 
+
 #Load Imagem
 bg = pygame.image.load("img/bgg.png")
 ground = pygame.image.load("img/ground.png")
@@ -19,11 +20,19 @@ ground = pygame.image.load("img/ground.png")
 ground_pos_x = 0
 game_speed = 4
 game_active = False
-pipe_espace = 60
+pipe_espace = 130#70
 pipe_frequency = 1500 #milliseconds
 last_pipe = pygame.time.get_ticks()
+score = 0
+pass_pipe = False
 
+#FONT
+font = pygame.font.SysFont("Arial", 60)
+font_color = (255,255,255) #White
 
+def draw_text(text, x, y):
+    img = font.render(text, True, font_color)
+    screen.blit(img, (x,y))
 
 class Bird(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -86,6 +95,7 @@ class Pipe(pygame.sprite.Sprite):
         #remove pipe that is out of screen
         if self.rect.right < 0:
             self.kill()
+
  
      
 
@@ -122,7 +132,9 @@ while running:
     
     #add Floor
     screen.blit(ground, (ground_pos_x,(screen_height-70)))
- 
+
+    draw_text(str(score), int(screen_width/2), 20)
+
 
     if game_active: 
 
@@ -143,7 +155,16 @@ while running:
             pipe_group.add(pipe_top)
             last_pipe = time_now
        
-
+        if len(pipe_group) >0:
+            if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.left\
+            and bird_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right\
+            and pass_pipe == False:
+                pass_pipe = True
+        
+            if pass_pipe == True:
+                if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.right:
+                    score += 1
+                    pass_pipe = False
 
         #If bird hit the floor, Stop the Game
         if bird.rect.bottom > screen_height-75:
