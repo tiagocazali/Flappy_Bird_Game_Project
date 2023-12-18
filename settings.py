@@ -11,6 +11,5 @@ class Settings:
         
         self.pipe_espace = 75
         self.pipe_frequency = 1500 #milliseconds
-        
-        self.score = 0
+
         

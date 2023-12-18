@@ -23,6 +23,9 @@ class Bird(Sprite):
         self.rect.center = [x,y]
         self.gravity = 0
     
+    def jump(self):
+        self.gravity = -10 #Make the bird Jump
+    
     def update(self):
         
         #add Gravity - Move the bird Down
@@ -35,11 +38,13 @@ class Bird(Sprite):
 
         #ANIMATION
         self.counter += 1 
+
         if self.counter > 10: #Only after 10 frames that the image will change
             self.index += 1
             self.counter =0
         if self.index >= len(self.images):
             self.index = 0
+
         self.image = self.images[self.index]
 
         #rotate the image

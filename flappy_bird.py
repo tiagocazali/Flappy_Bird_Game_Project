@@ -39,14 +39,13 @@ class FlappBird():
     
     def run_game(self):
 
-        running = True
-        while running:
+        while True:
             
-            self.check_events()
-            self.screen.blit(self.bg, (0,-150))  # Add de Background Image      
-            self.bird_group.draw(self.screen)  #add the Bird            
-            self.pipe_group.draw(self.screen) #add pipes
-            self.screen.blit(self.ground, (self.settings.ground_pos_x,(self.settings.screen_height-70)))
+            self.check_events()     #Check mouse and keyboard actions
+            self.screen.blit(self.bg, (0,-150))  # Draw the Background Image (never change)      
+            self.bird_group.draw(self.screen)  # Draw the Bird            
+            self.pipe_group.draw(self.screen) # Draw the pipes
+            self.screen.blit(self.ground, (self.settings.ground_pos_x,(self.settings.screen_height-70))) # Draw de Floor
             self.draw_text(str(self.score), int(self.settings.screen_width/2), 20)
 
             if self.game_active:
@@ -54,41 +53,38 @@ class FlappBird():
                 self.pipe_group.update() #make pipes move
                 self.create_new_pipe()
                 self.check_for_point()
-                self.check_for_colision()
+                self.check_for_collisions()
                 self.move_floor()
                 
 
-            if self.game_active == False:
+            if not self.game_active:
                 self.reset_button.draw()
 
-            # flip() the display to put your work on screen
-            pygame.display.flip()
+            pygame.display.update() # flip() the display to put your work on screen
 
             self.clock.tick(60)  # limits FPS to 60
 
-        pygame.quit()
+
 
     def check_events(self):
         
         for event in pygame.event.get():
             
             if event.type == pygame.QUIT:
-                running = False
                 sys.exit()
 
             elif event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_q) or (event.key == pygame.K_ESCAPE):
-                    running = True
                     sys.exit()
 
                 if event.key == pygame.K_SPACE:
-                    self.bird.gravity = -10 #Make the bird Jump
+                    self.bird.jump()
                     
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_position = pygame.mouse.get_pos()
                 if self.game_active == False:
-                   self.game_active, self.score = self.check_click_in_Reset(mouse_position)
-                   self.bird.gravity = -10 #Make the bird Jump
+                   self.check_click_in_Reset(mouse_position)
+                   self.bird.jump() #Make the bird Jump
 
     def create_new_pipe(self):
         time_now = pygame.time.get_ticks()
@@ -117,11 +113,13 @@ class FlappBird():
                     self.score += 1
                     self.pass_pipe = False
 
-    def check_for_colision(self):
+    def check_for_collisions(self):
+
         #If bird hit the floor, Stop the Game
         if self.bird.rect.bottom > self.settings.screen_height-75:
             self.game_active = False
         
+        #if bird hit the pipe, Stop the Game
         if pygame.sprite.groupcollide(self.bird_group, self.pipe_group, False, False):
             self.game_active = False
         
@@ -136,8 +134,10 @@ class FlappBird():
             self.pipe_group.empty()
             self.bird.rect.x = 100
             self.bird.rect.y = int(self.settings.screen_height/2)
-            return (True, 0)
-        return(False, 0)
+            self.score = 0
+            self.game_active = True
+            
+
 
 if __name__ == "__main__":
     ai = FlappBird()
