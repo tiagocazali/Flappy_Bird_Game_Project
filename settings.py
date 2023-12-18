@@ -1,5 +1,3 @@
-import pygame
-
 class Settings:
     
     def __init__(self) -> None:
@@ -13,6 +11,6 @@ class Settings:
         
         self.pipe_espace = 75
         self.pipe_frequency = 1500 #milliseconds
-        self.last_pipe = pygame.time.get_ticks()
+        
         self.score = 0
-        self.pass_pipe = False
+        

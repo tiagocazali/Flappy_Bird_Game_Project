@@ -7,6 +7,7 @@ class Bird(Sprite):
 
         super().__init__() #Initialize the Sprite
         self.settings = ai_game.settings
+        self.screen = ai_game.screen
 
         self.images = [
             pygame.image.load("img/bird1.png"),
@@ -29,7 +30,7 @@ class Bird(Sprite):
         if self.gravity > 8:
             self.gravity = 8
        
-        if self.rect.bottom <= self.screen_height-75:
+        if self.rect.bottom <= self.settings.screen_height-75:
             self.rect.y += int(self.gravity) 
 
         #ANIMATION
