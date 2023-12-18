@@ -1,14 +1,19 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Bird(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
+class Bird(Sprite):
+
+    def __init__(self, ai_game, x, y):
+
+        super().__init__() #Initialize the Sprite
+        self.settings = ai_game.settings
+
         self.images = [
             pygame.image.load("img/bird1.png"),
             pygame.image.load("img/bird2.png"),
             pygame.image.load("img/bird3.png")
         ]
-
+        
         self.index = 0
         self.counter = 0 #used to Count the frames before change the image
         self.image = self.images[self.index]
@@ -24,7 +29,7 @@ class Bird(pygame.sprite.Sprite):
         if self.gravity > 8:
             self.gravity = 8
        
-        if self.rect.bottom <= screen_height-75:
+        if self.rect.bottom <= self.screen_height-75:
             self.rect.y += int(self.gravity) 
 
         #ANIMATION
