@@ -142,7 +142,9 @@ while running:
                 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_position = pygame.mouse.get_pos()
-            game_active, score = reset_button.check_click_in_Reset(mouse_position)
+            if game_active == False:
+                game_active, score = reset_button.check_click_in_Reset(mouse_position)
+                bird.gravity = -10 #Make the bird Jump
                 
 
     # Add de Background Image
