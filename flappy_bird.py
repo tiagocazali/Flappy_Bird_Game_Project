@@ -1,4 +1,3 @@
-from typing import Any
 import pygame
 import random
 
@@ -35,90 +34,6 @@ def draw_text(text, x, y):
     img = font.render(text, True, font_color)
     screen.blit(img, (x,y))
 
-class Button():
-    def __init__(self, x, y, image) -> None:
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x,y)
-
-    def draw(self):
-
-        screen.blit(self.image, (self.rect.x-50, self.rect.y))
-
-    def check_click_in_Reset(self, mouse_position):
-        if self.rect.collidepoint(mouse_position):
-            pipe_group.empty()
-            bird.rect.x = 100
-            bird.rect.y = int(screen_height/2)
-            return (True, 0)
-
-
-
-
-class Bird(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.images = [
-            pygame.image.load("img/bird1.png"),
-            pygame.image.load("img/bird2.png"),
-            pygame.image.load("img/bird3.png")
-        ]
-
-        self.index = 0
-        self.counter = 0 #used to Count the frames before change the image
-        self.image = self.images[self.index]
-        
-        self.rect = self.image.get_rect()
-        self.rect.center = [x,y]
-        self.gravity = 0
-    
-    def update(self):
-        
-        #add Gravity - Move the bird Down
-        self.gravity += 0.5
-        if self.gravity > 8:
-            self.gravity = 8
-       
-        if self.rect.bottom <= screen_height-75:
-            self.rect.y += int(self.gravity) 
-
-        #ANIMATION
-        self.counter += 1 
-        if self.counter > 10: #Only after 10 frames that the image will change
-            self.index += 1
-            self.counter =0
-        if self.index >= len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-
-        #rotate the image
-        self.image = pygame.transform.rotate(self.image, self.gravity*-3) 
-
-
-class Pipe(pygame.sprite.Sprite):
-    def __init__(self, x, y, position):
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = pygame.image.load("img/pipe.png")
-        self.rect = self.image.get_rect()
-
-        #If position is 1 = TOP Pipe, -1 is bottom pipe
-        if position == 1:
-            self.image = pygame.transform.flip(self.image, False, True)
-            self.rect.bottomleft = [x, y-pipe_espace]
-        if position == -1:    
-            self.rect.topleft = [x, y+pipe_espace]
-
-    def update(self):
-        #Move de pipe to Left
-        self.rect.x -= game_speed
-        
-        #remove pipe that is out of screen
-        if self.rect.right < 0:
-            self.kill()
-
- 
-     
 
 pipe_group = pygame.sprite.Group()
 bird_group = pygame.sprite.Group()
