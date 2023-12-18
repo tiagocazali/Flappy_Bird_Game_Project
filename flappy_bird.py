@@ -15,24 +15,45 @@ clock = pygame.time.Clock()
 #Load Imagem
 bg = pygame.image.load("img/bgg.png")
 ground = pygame.image.load("img/ground.png")
+button_restart_img = pygame.image.load("img/restart.png")
 
 #Game Variables
 ground_pos_x = 0
 game_speed = 4
 game_active = False
-pipe_espace = 130#70
+pipe_espace = 75
 pipe_frequency = 1500 #milliseconds
 last_pipe = pygame.time.get_ticks()
 score = 0
 pass_pipe = False
 
-#FONT
-font = pygame.font.SysFont("Arial", 60)
-font_color = (255,255,255) #White
+
 
 def draw_text(text, x, y):
+    font = pygame.font.SysFont("Arial", 60)
+    font_color = (255,255,255) #White
     img = font.render(text, True, font_color)
     screen.blit(img, (x,y))
+
+class Button():
+    def __init__(self, x, y, image) -> None:
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x,y)
+
+    def draw(self):
+
+        screen.blit(self.image, (self.rect.x-50, self.rect.y))
+
+    def check_click_in_Reset(self, mouse_position):
+        if self.rect.collidepoint(mouse_position):
+            pipe_group.empty()
+            bird.rect.x = 100
+            bird.rect.y = int(screen_height/2)
+            return (True, 0)
+
+
+
 
 class Bird(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -105,12 +126,11 @@ bird_group = pygame.sprite.Group()
 bird = Bird(100, int(screen_height/2))
 bird_group.add(bird)
 
- 
+reset_button = Button(screen_width/2, screen_height/2, button_restart_img) 
 
 running = True
 while running:
    
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -119,7 +139,11 @@ while running:
                 running = False
             if event.key == pygame.K_SPACE:
                 bird.gravity = -10 #Make the bird Jump
-                game_active = True #Stat the game moviments
+                
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_position = pygame.mouse.get_pos()
+            game_active, score = reset_button.check_click_in_Reset(mouse_position)
+                
 
     # Add de Background Image
     screen.blit(bg, (0,-150))
@@ -144,6 +168,7 @@ while running:
 
         if pygame.sprite.groupcollide(bird_group, pipe_group, False, False):
             game_active = False
+            
 
         #Create new pipes
         time_now = pygame.time.get_ticks()
@@ -169,15 +194,18 @@ while running:
         #If bird hit the floor, Stop the Game
         if bird.rect.bottom > screen_height-75:
             game_active = False
-            
+
+
         #make the floor move
         ground_pos_x -= game_speed # move the floor a little to Letf - NEGATIVA VALUE
         if abs(ground_pos_x) > 100:
             ground_pos_x = 0
 
+    if game_active == False:
+        reset_button.draw()
 
     # flip() the display to put your work on screen
-    pygame.display.update()
+    pygame.display.flip()
 
     clock.tick(60)  # limits FPS to 60
 
