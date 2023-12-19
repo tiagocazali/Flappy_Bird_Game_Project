@@ -15,7 +15,7 @@ Welcome to Flappy Bird, a simple implementation of the Flappy Bird game in Pytho
 
 ## Overview
 
-The game features a bird that the player can control to navigate through pipes and earn points by passing through the gaps.
+Flappy Bird is a classic side-scrolling game where players control a bird to navigate through pipes, earning points by successfully passing through gaps.
 
 - **Responsive Controls:** Press the space bar to make the bird jump.
 - **Score Tracking:** Earn points by passing through the pipes.
