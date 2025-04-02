@@ -38,7 +38,7 @@ class FlappBird():
         self.bird = Bird(self)
         self.bird_group.add(self.bird)
 
-        #Criate Reset Button
+        #Create Reset Button
         self.reset_button = Button(self) 
 
 
@@ -73,11 +73,11 @@ class FlappBird():
 
 
     def check_events(self):
-        """Respond to keypresses and mouse events."""
+        """Respond to keypress and mouse events."""
 
         for event in pygame.event.get():
             
-            if event.type == pygame.QUIT:   # When the user click in the X to close windown.
+            if event.type == pygame.QUIT:   # When the user click in the X to close window.
                 sys.exit()
 
             elif event.type == pygame.KEYDOWN:
@@ -98,7 +98,7 @@ class FlappBird():
         time_now = pygame.time.get_ticks()
         if time_now - self.last_pipe > self.settings.pipe_frequency:
             
-            #choose a randon Hight for the pipes
+            #choose a random Hight for the pipes
             random_height = random.randint(-130, 130)
 
             #create the Bottom and Top pipes and add then in pipe_group
@@ -148,7 +148,7 @@ class FlappBird():
         
 
     def draw_points(self, text):
-        """Draw the curent point in the screen"""
+        """Draw the current point in the screen"""
 
         font = pygame.font.SysFont("Arial", 60)
         img = font.render(text, True, "white")
